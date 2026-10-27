@@ -1,0 +1,782 @@
+Interface --when ever we add methods in interface , it will effect the below mentioned Implemented class.
+
+So Java 8 introduced a default methods and Static methods
+
+Default methods are called using Object Reference
+
+interface A
+{
+    default void show() {
+        System.out.println("Default shows");
+    }
+}
+interface B
+{
+    default void show() {
+        System.out.println("Default show");
+    }
+}
+class C implements A,B
+{
+    //@Override
+    public void show()
+    {
+        System.out.println("Show from class C");
+    }
+    public void callsAinterface()
+    {
+        A.super.show();
+    }
+    public void callsBinterface()
+    {
+        B.super.show();
+    }
+
+}
+class Main {
+    public static void main(String[] args) {
+C c=new C();
+
+c.callsAinterface();
+    }
+}
+If 2 interfaces have the same default method,
+the implementing class MUST override that method.
+
+
+Static methods We called using Interface name.
+
+InterfaceName.methodName()
+
+Why Static methods In Interface:
+
+ Static methods in Java 8 are used to ready made methos  and common methods in interfaces without affecting existing implementations.
+No need to write same logic again and again
+Static methods are belongs to Classes
+in java 8 static methods belongs to Interface.
+
+Without object creation we can call static methods using interface name.
+
+
+1. So we have default methods then why static method ?
+
+-> In default methods can be overriden.
+-> but Static methods cant be overriden.
+===========
+Lambda 
+===========
+ Lambda expression is a short way to write a method (function) without a name.
+=================
+Where it is used :
+=================
+
+Sorting collections
+Functional interfaces (Comparator, Runnable)
+Stream API
+==========
+why Lambda
+===========
+Lambda expressions were introduced to write concise(Short and clean) code and to pass behavior(arguments) easily, especially for functional interfaces and Stream operations.
+
+To reduce the Code size
+
+======================
+Functional Interface:
+================
+-> A Functional Interface is an interface that has only ONE abstract method.
+->Can have multiple default/static methods
+->Used with lambda expressions
+->Annotated with @FunctionalInterface (optional but recommended)
+=======================================
+Common Functional Interfaces in Java:
+=========================================
+Predicate 
+Consumer
+Supplier
+Function
+Runnable
+Comparator
+Callable
+===========
+Predicate:
+==========
+ -> Take one Input**
+It has only one abstract method (Test)**
+Returns Boolean
+==========================================
+import java.util.function.Predicate;
+
+public class Main {
+    public static void main(String[] args) {
+
+        Predicate<Integer> p = x -> x > 10;
+
+        System.out.println(p.test(15));  // true
+        System.out.println(p.test(5));   // false
+    }
+}
+=======================================================
+===========
+2. Supplier
+===========
+
+It will not take any input**
+Returns the value
+It has one abstract method(Get)
+  Return OTP
+
+EX:
+class Test
+{
+
+PSVM(...)
+{                     ^It will not take any input
+Supplier<String> sp= (|)->"hello world";
+
+S.O.P.(Sp.get())--->But it returns output
+
+}
+
+}
+
+================
+3**.Consumer**
+==============
+
+--->It will accept One Input and wont return any Output.
+ Contains one abstract Method (Accept)
+returns nothing
+
+class Test
+{
+PSVM(...)
+
+{
+Consumer<String> c=(name)->S.O.P(name);
+
+c.accept("omprakash");
+}
+
+}
+===========
+4. Function  :
+=============
+
+It will take one Input and return output
+it has one abstract method apply
+
+
+import java.util.function.Function;
+
+public class Main {
+    public static void main(String[] args) {
+
+        Function<Integer, Integer> f = x -> x * 2;
+
+        System.out.println(f.apply(5));   // 10
+    }
+}
+
+==============================
+Take 2 inputs Used Bifunction
+================================
+BiFunction<T, U, R>
+
+T = first input
+U = second input
+R = result
+
+BiFunction<Integer, Integer, Integer> f = (a, b) -> a + b;
+================
+BiPredicate
+=================
+BiPredicate<T, U>
+
+T = first input
+U = second input
+
+
+Import java.util.function.BiPredicate;
+
+public class Main {
+    public static void main(String[] args) {
+
+        BiPredicate<Integer, Integer> bp = (a, b) -> a > b;
+
+        System.out.println(bp.test(10, 5));  // true
+    }
+}
+``
+===========
+BiConsumer
+============
+BiConsumer<T, U>
+
+T = first input
+U = second input
+
+
+
+import java.util.function.BiConsumer;
+
+public class Main {
+    public static void main(String[] args) {
+
+        BiConsumer<String, Integer> bc = (name, age) ->
+            System.out.println(name + " is " + age + " years old");
+
+        bc.accept("Om", 25);
+    }
+}
+
+=============
+Bisupplier
+==========
+❌ No, BiSupplier does NOT exist in Java
+
+
+===============
+//Method Reference:
+===========
+
+Method Reference is a shortcut of lambda expression to call an existing method directly.
+
+When to use method reference
+👉 Use it when:
+
+You are only calling an existing method
+You are not adding any new logic
+
+ Step 1: Normal way (Lambda)
+
+list.forEach(x -> System.out.println(x));
+You are saying:
+
+take x
+print x
+Step 2: Think carefully 🤔
+👉 Are we writing new logic here?
+❌ No
+👉 We are just calling:
+
+list.forEach(System.out::println);
+
+👉 Lambda = cooking from scratch 🍳
+👉 Method reference = using ready-made food 🍱
+
+
+
+
+
+
+Static :
+
+
+interface AddOperation {
+    int add(int a, int b);
+}
+class MathUtil {
+    static int add(int a, int b) { return a + b; }
+}
+ 
+
+
+class Main {
+    public static void main(String[] args) {
+
+AddOperation op = MathUtil::add;
+
+                 (ClassName :: Static Method)
+
+System.out.println(op.add(5, 10));
+    }
+}
+
+=================================
+Non Static :
+========================================
+
+Object :: Method
+
+1.interface AddOperation {
+    int add(int a, int b);
+}
+class MathUtil {
+     int add(int a, int b) { return a + b; }
+}
+ 
+class Main {
+    public static void main(String[] args) {
+MathUtil m=new MathUtil();
+AddOperation op = m::add;
+                **(Object :: Method)**
+
+
+
+System.out.println(op.add(5, 10));
+    }
+}
+
+2. ClassName:: Method
+
+
+import java.util.function.Function;
+
+public class Main {
+    public static void main(String[] args) {
+
+        Function<String, Integer> f = String::length;  // ✅ ClassName::method
+
+        System.out.println(f.apply("Java"));
+    **}**
+
+}
+
+Constructor Reference :
+
+👉 Instead of writing:
+() -> new Class
+
+ You can write:
+ClassName::new
+
+Supplier<ArrayList<Integer>> s = () -> new ArrayList<>();
+
+``Supplier<ArrayList<Integer>> s = ArrayList::new;
+
+
+interface StudentFactory {
+    Student create(int id, String name);
+}
+
+class Student {
+    int id;
+    String name;
+
+    Student(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+}
+
+// usage
+StudentFactory sf = Student::new;
+Student s = sf.create(1, "Om");
+
+
+
+
+====================
+/// String Joiner
+====================
+
+It is used to joinig more than one string with specified delimeter.
+
+concat prefix and suffix while joining strings using String Joinner.
+
+class A
+{
+
+P.S.V.M()
+{
+StringJoiner sj= new StringJoiner("-")(1-Delimeter)
+
+sj.add("ashok");
+sj.add("it");
+sj.add("java");
+
+S.O.P(sj);//ashok-it-java
+
+StringJoiner sj2= new StringJoiner("(","-",")")===3 delimeters
+
+sj.add("ashok");
+sj.add("it");
+sj.add("java");
+
+S.O.P(sj2);//(ashok-it-java)
+
+}
+
+}
+
+=================
+->Optional Class
+=================
+
+Optional Class is used to avoid Null Pointer exceptions.
+
+String s = null;
+System.out.println(s.length());  // ❌ NullPointerException
+
+
+import java.util.*;
+
+class Main {
+    public static void main(String[] args) {
+
+        String s = null;
+
+        Optional<String> opt = Optional.ofNullable(s);
+
+        if (opt.isPresent()) {
+            System.out.println("Length: " + opt.get().length());
+        } else {
+            System.out.println("String is null");
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------
+=======
+Streams
+=======
+ Streams are used to process data from collections (like List, Set) in a simple and efficient way.
+-> Used to process the data
+-> Collections are used store the data.
+-> Source of the data for Streams can be Array or Collections.
+-> Streams will not change the original data structure of the source (it will just process the data)
+==================
+Stream Operations:
+==================
+
+Intermediate Operations : It will perform operations on the stream and returns a new stream
+Ex: Filter  map
+Terminal Operations : It will take input and will provide result as output.
+
+============
+Filter method :
+=============
+
+Filtering means getting required data from Original data.
+
+Filter method will take input as predicate and return output as Stream Boolean.
+
+
+EX: List<Integer> nums = Arrays.asList(1, 2, 3, 4, 5);
+
+nums.stream()
+    .filter(n -> n % 2 == 0)   // keep even numbers
+    .forEach(System.out::println);
+
+==================
+Mapping Operations
+==================
+
+mapping operations are used to transformtions(Conversion) the stream elements and returns transformed elements as new straem.
+
+EX:
+
+List<String> names = Arrays.asList("ram", "shyam");
+
+names.stream()
+     .map(String::toUpperCase)
+     .forEach(System.out::println);
+
+//or//
+
+
+names.stream()
+     .map(S->S.toUppercase())
+     .forEach(System.out::println);
+
+filter() → select data ✅
+map() → change data ✅
+
+
+=======
+MapInt
+=======
+Map returns a Stream<R> (object stream).
+mapToInt returns an IntStream (primitive stream)
+Use mapToInt if the end result is int-based numeric processing.
+
+
+Map -->executes-->Takes an object--->Returns another object(object-> Object)
+mapInt-->returns ---> Takes an object-->convert to Primitive INT.[Used when you want int values (not Integer objects)}
+
+👉 map() converts elements to objects, while mapToInt() converts elements to primitive int for efficient numeric operations. 👍
+
+
+List<String> words = Arrays.asList("alpha", "beta", "gamma");
+
+int totalLength = words.stream()
+    .mapToInt(name->name.length())
+    .sum();  // IntStream.sum()
+
+System.out.println(totalLength); // 14
+
+
+=======
+FlatMap
+=======
+
+used to deal with nested collections
+
+one Input-----> Multiple Outputs
+
+import java.util.*;
+import java.util.stream.*;
+class Main {
+    public static void main(String[] args) {
+
+
+List<Integer> list1= Arrays.asList(1,2,3,4,5);
+List<Integer> list2= Arrays.asList(6,7,8,9,10);
+
+List<List<Integer>> list = Arrays.asList(list1,list2);
+
+list.stream()    ----       [[1,2,3,4,5],[6,7,8,9,10]]
+    .flatMap(l -> l.stream())----------for each inner list--------------first[1,2,3,4,5],second [6,7,8,9,10]
+    .forEach(System.out::println);
+
+    }
+}
+
+==============
+Slicing Operations(This Methods are Intermediate operations We get only new Streams)
+===================
+
+Distinct()--->To get Unique elements from the stream.
+
+import java .util.*;
+import java.util.stream.*;
+class Main {
+    public static void main(String[] args) {
+List<Integer> l1= Arrays.asList(1,2,3,4,5,1,2)
+
+l1.stream().distinct().forEach(System.out::println);
+    }
+}
+
+
+
+limit()----To get elements from stream based on given size:
+
+Stream.of(1, 2, 3, 4, 5)
+      .limit(4)
+      .forEach(System.out::println); o/p--1,2,3,4
+
+3.skip()----It is used to Skip the given elements from starting position of the stream
+
+stream.of(1, 2, 3, 4, 5)
+      .skip(2)
+      .forEach(System.out::println);
+
+What is terminal operation?
+👉 Operations like:
+
+forEach()
+collect()
+count()
+
+👉 These start execution ✅
+
+
+
+Lazy-----------[intermediate operations (like map, filter) do NOT execute immediately.]They wait until a terminal operation comes
+
+
+Return a Stream---------------So they can be chained.
+
+ Stream methods like filter(), map() return another Stream
+👉 Because of this → you can connect (chain) multiple operations together
+
+
+
+Do not modify original data------------They are functional and immutable.
+
+
+====================
+Matching Operation(Terminal Operations They return result Direct)
+====================
+anyMatch--->Returns true if at least one element matches the condition.
+
+ boolean status=   list.stream().anyMatch(e->e.getSalary()>=50000.0);(Max used for checking Condition)
+
+2.allMatch----->Returns true if every element matches the condition (or the stream is empty).
+
+ boolean status =list.stream().allMatch(e->e.getAge()>=18);
+
+3.noneMatch----->Returns true if no elements match the condition (or the stream is empty).
+
+ boolean status =list.stream().noneMatch(e->e.getAge()>=26);
+ 
+================
+FindFirst
+==============
+
+findFirst() is a terminal operation in Java Streams.
+It returns the first element that matches the stream pipeline.
+
+  Optional<Employee> optional=   list.stream().filter(e->e.getSalary()>=50000.0).findFirst();
+ 
+  if(optional.isPresent())
+  {
+      System.out.println(optional.get());
+  }
+import java.util.*;
+
+class Main {
+    public static void main(String[] args) {
+
+        List<Integer> list = Arrays.asList(10, 20, 30, 40);
+
+        Optional<Integer> result = list.stream().findFirst();
+
+        if (result.isPresent()) {
+            System.out.println(result.get());
+        }
+    }
+}
+``
+=============
+Collectors
+=============
+Collectors are used to collect data from Streams:[Collectors take data from a stream and convert it into list, set, map, or other formats]
+
+ toList / toSet / toCollection
+
+1.  toList():
+
+	 Convert stream to List
+				.collect(Collectors.toList()
+
+
+2.toSet
+	Convert stream to Set
+
+				.collect(Collectors.toSet())
+
+
+import java.util.*;
+import java.util.stream.Collectors;
+
+public class StreamToSetBasic {
+    public static void main(String[] args) {
+        List<String> names = Arrays.asList(
+            "Alice", "Bob", "Charlie", "Alice", "bob", "Diana", "Bob", "Eve", null
+        );
+
+        // Remove duplicates; HashSet has no predictable order; null allowed
+        Set<String> set = names.stream()
+                .collect(Collectors.toSet());
+
+        System.out.println("Set (toSet)   : " + set);
+    }
+}
+
+
+=====
+Max(Get Maximum salary in the employee Class)
+======
+ 
+ Optional<Employee> max=list.stream().collect(Collectors.maxBy(Comparator.comparing(e->e.getSalary()) ));
+System.out.println(max);
+  Optional<Employee> max=    al.stream().collect(Collectors.maxBy(Comparator.comparing(Employee::getSal)));//We can use Method reference with out using Lambda
+=======
+Min(Get Minimum salary in the employee Class)
+=============
+ Optional<Employee> max=list.stream().collect(Collectors.minBy(Comparator.comparing(e->e.getSalary()) ));
+System.out.println(max);
+
+
+Comparator = Compare‑rule(Comparing)
+Just remember this one line:
+👉 Comparator tells Java how to compare two items.
+
+=============
+Average SalRY
+=================
+Double sal=list.stream().collect(Collectors.averagingDouble(e->e.getSalary()));
+  System.out.println(sal);
+
+
+===========
+Grouping By
+============
+Categoring the data based on the requirement:
+
+When we use grouping () function with stream it will group the data as key -value paired and will returns map Object
+
+Map<Double,List<Employee>> data=list.stream().collect(Collectors.groupingBy(e->e.getSalary()));
+ 
+  System.out.println(data);
+
+
+{40000.0=[id=2, name=Radha, age=18, salary=40000.0], 51000.0=[id=4, name=doondi, age=3, salary=51000.0], 50000.0=[id=1, name=krishna, age=25, salary=50000.0], 500.0=[id=3, name=Rama, age=1, salary=500.0]}
+
+
+===============
+Parallel Streams
+===============
+
+Generally streams are executed in Sequence order.
+To improve execution process we can use Parallel Streams.
+
+Streams----get a Sequence Order
+Parallel Streams----get out put in Non Sequence order
+
+
+list<Integer> list = Arrays.asList(1,2,3,4,5);
+
+list.parallelStream().forEach(System.out::println);
+o/p: 
+1
+5
+2
+4
+3
+===================
+Split Iterator
+=============
+
+It is an interface in collection framework.
+Supports parallel Programming
+Split iterator use both Collections and streams.
+
+Not used for map Implementation Classes.
+
+
+SplitIterator<String> Sp= list.stream().splitIterator();
+
+sp.forEachRemaining(System.out::println);
+
+
+==================================
+Imp Programs Using Split Iterator
+================================
+
+//How many male and female employees int the Organisation:
+
+ Map<String,Long>map=   list.stream().collect(Collectors.groupingBy(Employee::getGender,Collectors.counting()));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

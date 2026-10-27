@@ -1,0 +1,127 @@
+Basics:
+
+1. Find all employees from a Specific city and get the count.
+
+
+List<Employee>employeeList=ArrayList.as(new Employee("tharun",57758,1,"bangalore,"Accounts"),
+                                new Employee("RAjesh",47758,2,"Piler,"Manager"),
+                                new Employee("suhas",37758,3,"bangalore,"AR"),
+                               new Employee("om",67758,4,"Chennai,"Tester"));
+
+
+                     employeeList.stream().filter(emp->emp.getCity().equals("bangalore").forEach(System.out::println);
+
+//count of employees belongs to Bangalore
+
+         long  total=   employeeList.stream().filter(emp->emp.getCity().equals("bangalore").count();
+
+S.op(total)
+
+2.find all employees where salary is greater than a particular value(greater than 10000)
+
+      employeeList.stream().filter(emp->emp.getsalary()>10000).forEach(System.out::println);
+
+----->3.print all employees names only in upper case and alphabetical order.
+
+           employeeList.stream().map(emp->emp.getEmployeeName().toUppercase())
+                                                                   .sort().forEach(System.out::println);
+
+
+4.Get the first Employee where dept is "HR" and if not available throw Exception
+
+
+optional<Employee> optemp= employeeList.stream().filter(emp->emp.getDeptName.equals("HR).findFirst();
+
+
+if not available throw Exception
+
+optemp.ifpresent(System.out::println)
+
+
+
+5.get the total salary of all employees in a specific department(HR).
+
+ double salary=     employeeList.stream().filter(emp->emp.getDepartment().equals("HR").mapToDouble(emp->emp.getSalary()); or mapToDouble(Employee::getSalary).sum();
+
+
+
+Intermediate:
+
+6. Check if all Employees have a salary greater than specific value.
+
+    Boolean isMatching= empoyeeList.stream().allMatch(emp->emp.getSalary>10000);
+
+S.O.P(isMatching
+
+
+7. get the sum of salaries of all employees and the average Salary.
+
+ double salarySum= employeeList.stream().mapToDouble(emp->emp.getSalary()).sum();
+
+or
+double salarySum= employeeList.stream().mapToDouble(Employee:: getSalary).sum();
+
+
+or
+employeeList.stream().collect(Collectors.summingDouble((Employee:: getSalary());
+
+
+S.o.p(salarySum)
+
+then find average ( it is Optional)check the value is available or not
+
+
+ Optionaldouble optavg= employeeList.stream().mapToDouble(emp->emp.getSalary()).sum().average();// converting into primitive and calling the aggeregate function
+
+
+optavg.ifPresent(System.out::println):
+
+
+or
+
+double avg=employeeList.stream().collect(Collectors.averagingDouble((Employee:: getSalary());//not  convert into primitive directly used the static methods
+
+
+
+
+
+8. get a map of employee names and their salaries
+
+
+Map<String,Double> mapnames=employeeList.stream().collect(Collectors.toMap(emp->emp.getEmpName(),Employee::getSalary));
+
+mapnames.forEach(name,sal->{
+                   S.O.P(name+" "+ sal);
+
+
+});
+
+9. print the employees details from highest salary to lowest
+
+
+   employeeList.stream.sorted((emp1,emp2)->((Double)emp2.getSalary()).compareTo(emp1.getSalary())).for Each(System::out::println);
+
+or
+employeeList.stream.sorted(Comparator.comparing(Employee::getSalary).reversed()).forEach(System.out,println);
+
+
+
+10, get the employees with highest Salary:
+ Optional<Employee> maxSalary=     employeeList.stream.max((emp1,emp2)->((Double)emp2.getSalary()).compareTo(emp1.getSalary())).
+
+   maxSalary.ifPresent(System.out::println);
+
+or
+       employeeList.stream.max(Comparator.comparing(Employee::getSalary));
+
+     maxSalary.ifPresent(System.out::println);
+
+
+  
+
+
+
+
+
+
+
